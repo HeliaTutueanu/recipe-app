@@ -1,6 +1,14 @@
 from django.shortcuts import render
-
-# Create your views here.
+from django.views.generic import ListView, DetailView
+from .models import Recipe
 
 def home(request):
    return render(request, 'recipes/home.html')
+
+class RecipeListView(ListView):
+   model = Recipe
+   template_name = 'recipes/main.html'
+
+class RecipeDetailView(DetailView):
+   model = Recipe
+   template_name = 'recipes/detail.html'
