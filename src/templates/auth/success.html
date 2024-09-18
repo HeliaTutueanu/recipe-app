@@ -1,2 +1,85 @@
-<h1>You’ve successfully logged out.</h1>
-<a href="{%url 'login' %}">Go back to login.</a>
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="shortcut icon" href="{% static 'recipes/images/favicon.ico' %}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url("{% static 'recipes/images/background.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            overflow-x: hidden;
+        }
+
+        main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-box {
+            margin-top: 25vh;
+            padding: 50px 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.23);
+            border-radius: 15px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(7px);
+        }
+
+        .main-box h1{
+            font-size: 40px;
+        }
+
+        .button {
+            margin-top: 10px;
+            text-decoration: none;
+            padding: 5px 10px;
+            background-color: #525a81;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+        }
+
+        .button:hover {
+            transform: scale(1.03);
+        }
+
+        @media all and (max-width: 800px) {
+            .main-box {
+                margin-top: 30vh;
+                padding: 15px 40px;
+                margin-left: 10px;
+                margin-right: 10px;
+            }
+
+            .main-box h1{
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="main-box">
+            <h1>You’ve successfully logged out.</h1>
+            <a class="button" href="{%url 'login' %}">Go back to login.</a>
+            <a class="button" href="{% url 'recipes:home' %}">Go to homepage.</a>
+        </div>
+    </main>
+</body>
+</html>

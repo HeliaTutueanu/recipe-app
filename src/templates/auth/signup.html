@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="shortcut icon" href="{% static './recipes/images/favicon.ico' %}">
+    <title>Sign Up</title>
+    <link rel="shortcut icon" href="{% static 'recipes/images/favicon.ico' %}">
     <style>
         body {
             margin: 0;
@@ -15,7 +15,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            height: 100vh;
+            height: 100%;
             overflow-x: hidden;
         }
 
@@ -26,8 +26,8 @@
         }
 
         .main-box {
-            margin-top: 25vh;
-            padding: 50px 120px;
+            margin-top: 5vh;
+            padding: 15px 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -39,7 +39,7 @@
         }
 
         .main-box h1{
-            font-size: 40px;
+            font-size: 30px;
         }
 
         .main-box form {
@@ -52,11 +52,12 @@
         }
 
         .main-box form input{
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .button {
-            margin-top: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
             padding: 5px 10px;
             background-color: #525a81;
             color: white;
@@ -81,8 +82,7 @@
 
         @media all and (max-width: 800px) {
             .main-box {
-                margin-top: 30vh;
-                padding: 15px 40px;
+                padding: 0px 20px;
                 margin-left: 10px;
                 margin-right: 10px;
             }
@@ -96,18 +96,18 @@
 <body>
     <main>
         <div class="main-box">
-            <h1>Login</h1>
+            <h1>Sign Up</h1>
             {% comment %} check for error message {% endcomment %}
             {% if error_message %}
                 {{error_message}}
             {% endif %}
-            <form action="" method="POST" >
+            <form action="" method="POST" enctype="multipart/form-data">
                 {% comment %} add Django security token {% endcomment %}
                 {% csrf_token %}   
                 {{form}}           
-                <button class="button" type="submit" >Login</button>
+                <button class="button" type="submit" >Sign Up</button>
             </form>
-            <a href="{% url 'users:signup' %}" class="link">Not signed up yet?</a>
+            <a href="{% url 'login' %}" class="link">Back to login.</a>
         </div>
     </main>
 </body>

@@ -1,0 +1,260 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'recipes/css/nav.css' %}">
+    <title>Recipes Details</title>
+    <link rel="shortcut icon" href="{% static 'recipes/images/favicon.ico' %}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #acbde2;
+            background-image: url("{% static 'recipes/images/recipes-background.jpg' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        main {
+            margin-top: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        main p {
+            font-size: 18px;
+        }
+
+        .main-box {
+            padding: 30px;
+            width: 80%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .main-box form {
+            margin-bottom: 15px;
+        }
+
+        .main-box form input {
+            font-size: 18px;
+            background-color: #4f5e7c;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 3px;
+            margin: 5px;
+        }
+
+        .main-box form input::placeholder {
+            color: #fff;
+            font-size: 18px;
+        }
+
+        .main-box select {
+            font-size: 18px;
+            background-color: #4f5e7c;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 3px;
+            margin: 5px;
+        }
+
+        .main-box button {
+            padding: 3px 10px;
+            margin: 5px;
+            background-color: #525a81;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+        }
+
+        .main-box button:hover {
+            transform: scale(1.025);
+        }
+
+        .main-box ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+        }
+
+        .main-box ul li {
+            width: 29%;
+            min-width: 250px;
+            margin-bottom: 30px;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(6px);
+            transition: 0.25s ease-out;
+        }
+
+        .main-box ul li:hover {
+            transform: translateY(-8px);
+        }
+
+        .main-box ul li img {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .main-box ul li a {
+            text-decoration: none;
+        }
+
+        .main-box ul li h2 {
+            text-transform: capitalize;
+        }
+
+
+        .main-box h2 {
+            font-size: 25px;
+            color: #000;
+        }
+
+        h1 {
+            font-size: 30px;
+            margin-top: 30px;
+        }
+
+        .pagination .link {
+            text-decoration: none;
+            color: #000;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        @media all and (max-width: 550px) {
+            main {
+                margin-top: 30px;
+                padding: 10px;
+            }
+
+            .main-box {
+                padding: 10px;
+                width: 95%;
+            }
+
+            .main-box p {
+                margin-left: 25px;
+            }
+
+            .main-box form {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .main-box button {
+                width: 95%;
+            }
+
+            .main-box ul li img {
+                height: 150px;
+            }
+
+            .data-analytics {
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="smalldiv">
+            <li class="navitem" id="small"><h1>Recipe App</h1></li>
+        </div>
+        <ul>
+            <li class="navitem"><a href="{% url 'recipes:home' %}">Home</a></li>
+            <li class="navitem"><a href="{% url 'recipes:recipes' %}">Recipes</a></li>
+            <li class="navitem" id="big"><h1>Recipe App</h1></li>
+            {% if user.is_authenticated %}
+                <li class="navitem"><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+                <li class="navitem"><a href="{% url 'login' %}">Login</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <main>
+        <div class="main-box">
+            <p>Search for an ingredient or recipe name:</p>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ form.recipe_name }}
+                {{ form.chart_type }}
+                <button type="submit">Search</button>
+                <a href="{% url 'recipes:recipes' %}"><button type="button">Show all</button></a>
+            </form>
+            {% if form.is_bound %}
+                <p>You searched for: {{ form.recipe_name.value }}</p>
+                {% if not recipes.empty %}
+                    <ul>
+                    {% for index, recipe in recipes.iterrows %}
+                        <li>
+                            <a href="{% url 'recipes:detail' pk=recipe.id %}">
+                                <h2>{{ recipe.name }}</h2>
+                                <img src="{{ recipe.pic.url }}" />
+                            </a>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                    <h1>Data Analytics</h1>
+                    <img class="data-analytics" src="data:image/png;base64, {{chart|safe}}">
+                {% else %}
+                    <h3>No data</h3>
+                {% endif %}
+            {% else %}
+                <ul>
+                    {% for recipe in recipes %}
+                        <li>
+                            <a href="{% url 'recipes:detail' pk=recipe.id %}">
+                                <h2>{{ recipe.name }}</h2>
+                                <img src="{{ recipe.pic.url }}" />
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                
+                <div class="pagination">
+                    <span class="pagination-links">
+                        {% if page_obj.has_previous %}
+                            <a href="?page={{ page_obj.previous_page_number }}" class="link">&larr;&nbsp;</a>
+                        {% endif %}
+                        
+                        <span class="current">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                        </span>
+                
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}" class="link">&nbsp;&rarr;</a>
+                        {% endif %}
+                    </span>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+</body>
+</html>
