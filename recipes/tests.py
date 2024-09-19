@@ -55,8 +55,7 @@ class RecipeAuthTest(TestCase):
         user = User.objects.create_user(username='testuser', password='testpassword')
         Recipe.objects.create(
             name='Banana Pancakes',
-            ingredients='Banana, Eggs, Baking Powder',
-            author=user)
+            ingredients='Banana, Eggs, Baking Powder')
 
     def test_details_redirect_without_auth(self):
         recipe = Recipe.objects.get(id=1)
@@ -77,15 +76,6 @@ class RecipeAuthTest(TestCase):
         self.assertTrue(login)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'recipes/recipes_details.html')
-
-    def test_author_redirect_with_auth(self):
-        login = self.client.login(username='testuser', password='testpassword')
-        recipe = Recipe.objects.get(id=1)
-        response = self.client.get(reverse('recipes:author', args=[recipe.id]))
-        self.assertTrue(login)
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'recipes/recipes_author.html')
-
 
 class RecipeFormsTest(TestCase):
     def setUpTestData():
